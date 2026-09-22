@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Eissa · Energy and States of Matter</title>
+<meta name="description" content="Bilingual interactive science lab for Eissa — Energy and States of Matter.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚛️</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@500;700;800&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div id="stars"></div>
+
+<header class="topbar">
+  <button class="burger" id="burger" aria-label="Menu">☰</button>
+  <div class="brand">
+    <span class="logo">⚛️</span>
+    <div>
+      <b>Eissa · عيسى</b>
+      <small>Energy &amp; States of Matter</small>
+    </div>
+  </div>
+  <div class="stats">
+    <span class="chip xp" title="XP">⭐ <b id="xpVal">0</b></span>
+    <span class="chip streak" title="Streak">🔥 <b id="streakVal">0</b></span>
+    <div class="langsel" id="langsel">
+      <button data-lang="ar">🇸🇦 ع</button>
+      <button data-lang="en">🇬🇧 EN</button>
+      <button data-lang="both" class="on">🌐 Both</button>
+    </div>
+  </div>
+</header>
+
+<nav class="sidenav" id="sidenav">
+  <a data-page="home" class="on"><i>🏠</i><span class="en">Home</span><span class="ar">الرئيسية</span></a>
+  <a data-page="learn"><i>📖</i><span class="en">Lesson</span><span class="ar">شرح الدرس</span></a>
+  <a data-page="lab"><i>🧪</i><span class="en">Matter Lab</span><span class="ar">مختبر المادة</span></a>
+  <a data-page="atoms"><i>⚛️</i><span class="en">Atoms &amp; Compounds</span><span class="ar">الذرات والمركبات</span></a>
+  <a data-page="practice"><i>🎮</i><span class="en">Practice</span><span class="ar">تدرب</span></a>
+  <a data-page="memory"><i>🧠</i><span class="en">Memory Mode</span><span class="ar">وضع الحفظ</span></a>
+  <a data-page="challenge"><i>🏆</i><span class="en">Challenge</span><span class="ar">اختبر نفسك</span></a>
+  <a data-page="progress"><i>📊</i><span class="en">Progress</span><span class="ar">تقدم عيسى</span></a>
+  <div class="navfoot">
+    <button id="resetBtn" class="ghost sm"><span class="en">Reset progress</span><span class="ar">مسح التقدم</span></button>
+  </div>
+</nav>
+<div class="scrim" id="scrim"></div>
+
+<main id="main"></main>
+
+<div id="toast" class="toast"></div>
+<canvas id="confetti"></canvas>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
