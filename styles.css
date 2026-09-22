@@ -9,7 +9,7 @@ html,body{margin:0;padding:0}
 html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 body{
   font-family:'Nunito','Baloo Bhaijaan 2',system-ui,-apple-system,sans-serif;
-  min-height:100svh;overscroll-behavior-y:none;
+  min-height:100svh;
   background:radial-gradient(1100px 700px at 12% -8%,#1d2a63 0%,transparent 60%),
              radial-gradient(900px 600px at 95% 0%,#3a1c5c 0%,transparent 55%),
              linear-gradient(180deg,var(--bg),var(--bg2));
