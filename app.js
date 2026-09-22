@@ -50,16 +50,19 @@ function pbox(state,label,extra){
 }
 function initSims(root){
   $$('.pbox[data-sim]',(root||document)).forEach(el=>{
-    const state=el.dataset.sim, n=state==='gas'?9:state==='liquid'?26:28;
+    const W=el.clientWidth,H=el.clientHeight||190;
+    if(!W){setTimeout(()=>initSims(root),120);return}   // not laid out yet (iOS)
+    const wide=W>250;
+    const state=el.dataset.sim, n=state==='gas'?9:state==='liquid'?(wide?26:18):(wide?28:20);
     el.querySelectorAll('.pt').forEach(p=>p.remove());
-    const W=el.clientWidth||300,H=el.clientHeight||190,ps=[];
+    const ps=[];
     for(let i=0;i<n;i++){
       const d=document.createElement('div');
       d.className='pt'+(state==='gas'?' o':state==='liquid'?' v':'');
       el.appendChild(d);
       let x,y;
-      if(state==='solid'){const cols=7,gap=Math.min(26,(W-30)/cols);
-        x=16+(i%cols)*gap;y=H-28-Math.floor(i/cols)*gap}
+      if(state==='solid'){const cols=wide?7:5,gap=Math.min(26,(W-30)/cols);
+        x=14+(i%cols)*gap;y=H-26-Math.floor(i/cols)*gap}
       else if(state==='liquid'){x=12+Math.random()*(W-34);y=H*.42+Math.random()*(H*.52)}
       else{x=10+Math.random()*(W-30);y=10+Math.random()*(H-30)}
       ps.push({d,x,y,hx:x,hy:y,vx:(Math.random()-.5),vy:(Math.random()-.5)});
@@ -574,6 +577,11 @@ document.addEventListener('click',e=>{
   const n=e.target.closest('.sidenav a');
   if(n){go(n.dataset.page)}
 });
+/* save battery: stop the particle loop when the tab/app is backgrounded (iOS) */
+document.addEventListener('visibilitychange',()=>{
+  if(document.hidden){if(raf)cancelAnimationFrame(raf);raf=null}
+  else if(SIMS.length&&!raf)loop();
+});
 $('#burger').onclick=()=>{$('#sidenav').classList.toggle('open');$('#scrim').classList.toggle('open')};
 $('#scrim').onclick=()=>{$('#sidenav').classList.remove('open');$('#scrim').classList.remove('open')};
 $('#resetBtn').onclick=()=>{if(confirm('مسح كل التقدم؟ / Reset all progress?')){P={xp:0,streak:0,last:'',seen:{},badges:[]};save();hud();go('progress')}};
@@ -591,5 +599,17 @@ $$('#langsel button').forEach(b=>b.onclick=()=>setLang(b.dataset.lang));
 setLang((()=>{try{return localStorage.getItem(KEY+'-lang')||'both'}catch(e){return 'both'}})());
 hud();
 go((location.hash||'#home').slice(1));
-addEventListener('resize',()=>{const p=(location.hash||'#home').slice(1);clearTimeout(window._rz);window._rz=setTimeout(()=>go(p),300)});
+/* Re-layout only on a real width change (orientation / rotate).
+   iOS Safari fires resize when the URL bar collapses while scrolling —
+   re-rendering there would throw away the question Eissa is answering. */
+let lastW=innerWidth;
+addEventListener('resize',()=>{
+  if(Math.abs(innerWidth-lastW)<40)return;
+  lastW=innerWidth;
+  clearTimeout(window._rz);
+  window._rz=setTimeout(()=>{
+    clearSims();initSims(main);wireSliders(main);
+  },250);
+});
+addEventListener('orientationchange',()=>{setTimeout(()=>{clearSims();initSims(main)},400)});
 })();
